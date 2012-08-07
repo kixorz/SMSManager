@@ -7,10 +7,35 @@ require("HTTPRequest.php");
 
 class SMSManagerException extends \Exception
 {
-	function __construct($message, $code = 0)
+	function __construct($code = 0)
 	{
-		parent::__construct($message, $code);
+		if(intval($code) > 900)
+		{
+			$code = 900;
+		}
 		
+		$codes = array
+		(
+			"101" => "Neexistující data požadavku (chybí XMLDATA parametr u XML API)",
+			"102" => "Metoda neexistuje",
+			"103" => "Neplatné uživatelské jméno nebo heslo",
+			"104" => "Neplatný parametr gateway",
+			"105" => "Nedostatek kreditu pro prepaid",
+			"201" => "Žádná platná telefonní čísla v požadavku",
+			"202" => "Text zprávy neexistuje nebo je příliš dlouhý",
+			"203" => "Neplatný parametr sender (odesílatele nejprve nastavte ve webovém rozhraní)",
+			"900" => "Systémová chyba (informujte se na support@smsmanager.cz)"
+		);
+		
+		if(empty($codes[$code]))
+		{
+			parent::__construct("SMSManager API vrátilo neznámou chybu", $code);
+		}
+		else
+		{
+			parent::__construct("SMSManager API vrátilo chybu: ".$codes[$code], $code);
+		}
+
 		if(Config::logging)
 		{
 			error_log((string)$self);
@@ -32,7 +57,7 @@ class SMSManager
 		$this->request = new HTTPRequest($this->username, $this->password);
 	}
 	
-	public function prepareMessage(Array $numbers, $text, $type = "lowcost")
+	public function prepareMessage(Array $numbers, $text, $type = Config::gateway_type)
 	{
 		$message = new \stdClass;
 		
@@ -91,14 +116,27 @@ class SMSManager
 		
 		$requestDocument->appendChild($requestList);
 		
-		$responseXML = $this->request->post("Send", $xml->saveXML());
+		try
+		{
+			$responseXML = $this->request->post("Send", $xml->saveXML());
+		}
+		catch(\Exception $e)
+		{
+			//just make sure we log this exception
+			if(Config::logging)
+			{
+				error_log((string)$e);
+			}
+
+			throw $e;
+		}
 		
 		$response = simplexml_load_string($responseXML);
 		
 		$attr = (array)$response->Response;
 		if($attr["@attributes"]["Type"] != "OK")
 		{
-			throw new SMSManagerException("API responded with error.");
+			throw new SMSManagerException($attr["@attributes"]["ID"]);
 		}
 		
 		$out = array();
@@ -149,8 +187,6 @@ class SMSManager
 	public function requestStatus($requestId)
 	{
 		$response = $this->request->get("RequestStatus", array("requestID" => $requestId));
-		
-		var_dump($response);
 		
 		$o = new \stdClass;
 		list(

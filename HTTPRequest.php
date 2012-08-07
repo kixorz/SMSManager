@@ -2,39 +2,10 @@
 
 namespace SMSManager;
 
-class HTTPRequestException extends SMSManagerException
-{
-	function __construct($code)
-	{
-		if(intval($code) > 900)
-		{
-			$code = 900;
-		}
-		
-		$codes = array
-		(
-			"101" => "Neexistující data poadavku (chybí XMLDATA parametr u XML API)",
-			"102" => "Metoda neexistuje",
-			"103" => "Neplatné uivatelské jméno nebo heslo",
-			"104" => "Neplatnı parametr gateway",
-			"105" => "Nedostatek kreditu pro prepaid",
-			"201" => "ádná platná telefonní èísla v poadavku",
-			"202" => "Text zprávy neexistuje nebo je pøíliš dlouhı",
-			"203" => "Neplatnı parametr sender (odesílatele nejprve nastavte ve webovém rozhraní)",
-			"900" => "Systémová chyba (informujte se na support@smsmanager.cz)"
-		);
-		
-		if(empty($codes[$code]))
-		{
-			parent::__construct("SMSManager API vrátilo neznámou chybu", $code);
-		}
-		
-		parent::__construct("SMSManager API chyba: ".$codes[$code], $code);
-	}
-}
-
 class HTTPRequest
 {
+	protected $params;
+	
 	public function __construct($username, $password)
 	{
 		$this->params = array
@@ -44,7 +15,7 @@ class HTTPRequest
 		);
 	}
 	
-	public function get($method, $params = array())
+	public function get($method, array $params = array())
 	{
 		$getParams = array_merge($params, $this->params);
 		
