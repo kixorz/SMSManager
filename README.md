@@ -29,7 +29,7 @@ require("SMSManager/SMSManager.php");
 	
 $sms = new SMSManager\SMSManager();
 	
-$message = $sms->prepareMessage("+420776123456", "Testovaci zprava");
+$message = $sms->prepareMessage("00420776123456", "Testovaci zprava");
 $response = $sms->send($message);
 	
 var_dump($response);
