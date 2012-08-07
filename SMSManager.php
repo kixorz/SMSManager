@@ -57,10 +57,15 @@ class SMSManager
 		$this->request = new HTTPRequest($this->username, $this->password);
 	}
 	
-	public function prepareMessage(Array $numbers, $text, $type = Config::gateway_type)
+	public function prepareMessage($numbers, $text, $type = Config::gateway_type)
 	{
 		$message = new \stdClass;
 		
+		if(!is_array($numbers))
+		{
+			$numbers = array($numbers);
+		}
+
 		$message->numbers = $numbers;
 		$message->text = $text;
 		$message->type = $type;

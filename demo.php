@@ -18,7 +18,7 @@ echo "<pre>";
 var_dump(
 	$s->send(
 		array(
-			$s->prepareMessage(array("00420776123456"), "testovaci sms")
+			$s->prepareMessage("00420776123456", "testovaci sms")
 		)
 	)
 );
