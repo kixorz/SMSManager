@@ -37,6 +37,8 @@ var_dump($response);
 ```
 
 ##Licence
+Služba SMSManager Copyright © 2012 Interactive Marketing, s.r.o.
+
 Tato knihovna je šířena pod BSD licencí:
 
 Copyright © 2012, Adam Konrád. Všechna práva vyhrazena.
