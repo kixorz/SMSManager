@@ -8,7 +8,7 @@ var_dump($s->requestList());
 
 echo "<pre>";
 var_dump($s->requestStatus(123456));
-echo "</pre>"
+echo "</pre>";
 
 echo "<pre>";
 var_dump($s->getUserInfo());
