@@ -1,5 +1,7 @@
 # SMSManager.cz API PHP Wrapper
-Jednoduchá neoficiální knihovna pro práci se službou [SMSManager.cz](http://www.smsmanager.cz/) v prostředí jazyka PHP >= 5.3 Knihovna vyžaduje rozšíření cURL.
+Jednoduchá neoficiální knihovna pro práci se službou [SMSManager.cz](http://www.smsmanager.cz/) v prostředí jazyka PHP >= 5.3
+
+Knihovna pro svůj provoz vyžaduje nainstalované rozšíření cURL.
 
 ##Popis
 Knihovna obsahuje vlastní namespace SMSManager a tvoří ji čtyři třídy:
@@ -27,7 +29,7 @@ require("SMSManager/SMSManager.php");
 	
 $sms = new SMSManager\SMSManager();
 	
-$message = $sms->prepareMessage("+420776123456", "Testovaci zprava");
+$message = $sms->prepareMessage("00420776123456", "Testovaci zprava");
 $response = $sms->send($message);
 	
 var_dump($response);
