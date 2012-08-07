@@ -4,12 +4,12 @@ Jednoduchá neoficiální knihovna pro práci se službou [SMSManager.cz](http:/
 Knihovna pro svůj provoz vyžaduje nainstalované rozšíření cURL.
 
 ##Popis
-Knihovna obsahuje vlastní namespace SMSManager a tvoří ji čtyři třídy:
+Knihovna obsahuje vlastní namespace `SMSManager` a tvoří ji čtyři třídy:
 
 1. **Config** - konfigurace knihovny podle [popisu API](http://smsmanager.cz/api/) na oficiálních stránkách služby. Standardně je používán protokol **HTTPS** a typ brány **lowcost**. Pro použití je nutné doplnit pouze hodnoty proměnných **username** a **password**.
 2. **HTTPRequest** - třída provádějící HTTP GET/POST dotazy do API služby.
 3. **SMSManagerException** - třída překládající chybové kódy služby na výjimky. Tyto výjimky jsou v této třídě také automaticky logovány.
-4. **SMSManager** - třída implementující následující funkce SMSManager API:
+4. **SMSManager** - třída implementující následující funkce `SMSManager` API:
 	* `prepareMessage(Array $numbers, $text, $type = Config::gateway_type)`
 		* `$numbers` - pole telefonních čísel
 		* `$text` - text zprávy
@@ -29,7 +29,7 @@ require("SMSManager/SMSManager.php");
 	
 $sms = new SMSManager\SMSManager();
 	
-$message = $sms->prepareMessage("00420776123456", "Testovaci zprava");
+$message = $sms->prepareMessage("+420776123456", "Testovaci zprava");
 $response = $sms->send($message);
 	
 var_dump($response);
