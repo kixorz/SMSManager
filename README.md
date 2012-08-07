@@ -10,10 +10,10 @@ Knihovna obsahuje vlastní namespace `SMSManager` a tvoří ji čtyři třídy:
 2. **HTTPRequest** - třída provádějící HTTP GET/POST dotazy do API služby.
 3. **SMSManagerException** - třída překládající chybové kódy služby na výjimky. Tyto výjimky jsou v této třídě také automaticky logovány.
 4. **SMSManager** - třída implementující následující funkce `SMSManager` API:
-	* `prepareMessage(Array $numbers, $text, $type = Config::gateway_type)`
-		* `$numbers` - pole telefonních čísel
+	* `prepareMessage($numbers, $text, $type = Config::gateway_type)`
+		* `$numbers` - telefonní číslo nebo jejich pole
 		* `$text` - text zprávy
-		* `$type` - nepovinný parametr typ brány	
+		* `$type` - typ brány, nepovinný parametr	
 	* `send($messsages)`
 		* `$messages` - jediná zpráva nebo pole zpráv připravených předchozí metodou `prepareMessage(…)` Zprávy jsou synchronně odeslány pomocí jediného volání XML API služby.
 	* `requestList()` - medoda vracející pole zpráv a jejich stav podle [dokumentace API](http://smsmanager.cz/api/http/#requestlist) Formát vracených objektů je patrný z těla metody.
